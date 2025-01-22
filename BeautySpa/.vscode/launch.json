@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "name": "Flutter (lib\\views\\book_appointment.dart)",
+            "type": "dart",
+            "request": "launch",
+            "cwd": "beauty_spa",
+            "program": "lib\\views\\book_appointment.dart"
+        }
+    ]
+}
