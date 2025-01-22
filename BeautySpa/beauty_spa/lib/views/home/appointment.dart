@@ -187,12 +187,12 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
           ),
         ),
         backgroundColor:
-            const Color.fromARGB(255, 251, 251, 251), // White background
-        elevation: 0, // Flat AppBar
+            const Color.fromARGB(255, 251, 251, 251), 
+        elevation: 0, 
         leading: IconButton(
           icon: const Icon(
-            CupertinoIcons.back, // Cupertino back icon
-            color: Colors.black, // Black icon color
+            CupertinoIcons.back, 
+            color: Colors.black, 
           ),
           onPressed: () {
             Navigator.pop(context);
