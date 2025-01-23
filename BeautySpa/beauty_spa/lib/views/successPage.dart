@@ -1,6 +1,6 @@
 import 'package:beauty_spa/views/home/home_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart'; // For Cupertino icons
+import 'package:flutter/cupertino.dart'; 
 
 class SuccessPage extends StatelessWidget {
   @override
@@ -12,18 +12,16 @@ class SuccessPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // Display PNG image only
             Center(
               child: Image.asset(
-                'assets/images/check.png', // Path to your PNG image
+                'assets/images/check.png', 
                 width: 100,
                 height: 100,
-                fit: BoxFit.contain, // Ensures the image fits well
+                fit: BoxFit.contain, 
               ),
             ),
 
             const SizedBox(height: 24),
-            // "Payment Successful!" text
             const Text(
               'Payment Successful!',
               style: TextStyle(
@@ -33,7 +31,6 @@ class SuccessPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8),
-            // Subtext
             const Text(
               'Your booking has been successfully done',
               textAlign: TextAlign.center,
@@ -43,16 +40,15 @@ class SuccessPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 40),
-            // Back to Home TextButton
             Center(
               child: GestureDetector(
                 onTap: () {
                   Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => HomePage(), // Navigate to HomePage
+                      builder: (context) => HomePage(), 
                     ),
-                    (route) => false, // Remove all previous routes
+                    (route) => false,
                   );
                 },
                 child: Container(
@@ -64,21 +60,21 @@ class SuccessPage extends StatelessWidget {
                       colors: [
                         Color(0xFFD66986),
                         Color(0xFFED9598),
-                      ], // Gradient from #d66986 to #ed9598
+                      ], 
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     ),
                   ),
                   child: Row(
-                    mainAxisSize: MainAxisSize.min, // Ensures the row is compact
+                    mainAxisSize: MainAxisSize.min, 
                     children: const [
                       Icon(
-                        CupertinoIcons.back, // Cupertino back icon
-                        color: Colors.white, // White to match the text
+                        CupertinoIcons.back, 
+                        color: Colors.white, 
                         size: 20,
                       ),
                       SizedBox(
-                          width: 8), // Spacing between the icon and the text
+                          width: 8), 
                       Text(
                         'Back to home',
                         style: TextStyle(

@@ -1,7 +1,7 @@
-import 'package:beauty_spa/views/home/SignUp.dart';
+import 'package:beauty_spa/views/authPages/SignUp.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'home_page.dart';
+import '../home/home_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -34,7 +34,6 @@ class _LoginPageState extends State<LoginPage> {
           _errorMessage = '';
         });
 
-        // Navigate to Home Page on successful login
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const HomePage()),
@@ -85,7 +84,10 @@ class _LoginPageState extends State<LoginPage> {
                     children: [
                       const Text(
                         "Email",
-                        style: TextStyle(fontSize: 16,fontWeight: FontWeight.w500, color: Color.fromRGBO(9, 0, 0, 0.529)),
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Color.fromRGBO(9, 0, 0, 0.529)),
                       ),
                       const SizedBox(height: 8),
                       TextFormField(
@@ -94,7 +96,8 @@ class _LoginPageState extends State<LoginPage> {
                           filled: true,
                           fillColor: Colors.white,
                           hintText: "Enter your email",
-                          hintStyle: const TextStyle(color: Color.fromARGB(255, 200, 199, 199)),
+                          hintStyle: const TextStyle(
+                              color: Color.fromARGB(255, 200, 199, 199)),
                           prefixIcon: const Icon(Icons.person,
                               color: Color(0xFFDE778C)),
                           enabledBorder: OutlineInputBorder(
@@ -110,16 +113,27 @@ class _LoginPageState extends State<LoginPage> {
                           errorBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide:
-                                BorderSide(color: Colors.grey.withOpacity(0.5)),
+                                BorderSide(color: Colors.red.withOpacity(0.5)),
                           ),
                         ),
-                        validator: (value) =>
-                            value!.isEmpty ? "Please enter username" : null,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter your email";
+                          }
+
+                          if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                            return "Please enter a valid email address";
+                          }
+                          return null;
+                        },
                       ),
                       const SizedBox(height: 16),
                       const Text(
                         "Password",
-                        style: TextStyle(fontSize: 16,fontWeight: FontWeight.w500, color: Color.fromRGBO(9, 0, 0, 0.529)),
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Color.fromRGBO(9, 0, 0, 0.529)),
                       ),
                       const SizedBox(height: 8),
                       TextFormField(
@@ -129,7 +143,9 @@ class _LoginPageState extends State<LoginPage> {
                           filled: true,
                           fillColor: Colors.white,
                           hintText: "Enter password",
-                          hintStyle: const TextStyle(color: Color.fromARGB(255, 200, 199, 199),),
+                          hintStyle: const TextStyle(
+                            color: Color.fromARGB(255, 200, 199, 199),
+                          ),
                           prefixIcon:
                               const Icon(Icons.lock, color: Color(0xFFDE778C)),
                           enabledBorder: OutlineInputBorder(
@@ -148,8 +164,21 @@ class _LoginPageState extends State<LoginPage> {
                                 BorderSide(color: Colors.grey.withOpacity(0.5)),
                           ),
                         ),
-                        validator: (value) =>
-                            value!.isEmpty ? "Please enter password" : null,
+                           validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter your password";
+                          } else if (value.length <= 8) {
+                            return "Password must be more than 8 characters";
+                          } else if (!RegExp(r'[A-Z]').hasMatch(value)) {
+                            return "Password must include at least one uppercase letter";
+                          } else if (!RegExp(r'[0-9]').hasMatch(value)) {
+                            return "Password must include at least one number";
+                          } else if (!RegExp(r'[!@#$%^&*(),.?":{}|<>]')
+                              .hasMatch(value)) {
+                            return "Password must include at least one special character";
+                          }
+                          return null;
+                        },
                       ),
                       const SizedBox(height: 24),
                       if (_showError)
@@ -213,7 +242,6 @@ class _LoginPageState extends State<LoginPage> {
                               side: BorderSide(color: Colors.grey.shade300),
                             ),
                             onPressed: () {
-                              // Handle Google Login
                             },
                             icon: const Icon(
                               Icons.g_mobiledata,

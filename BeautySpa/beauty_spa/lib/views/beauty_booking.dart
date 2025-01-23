@@ -16,7 +16,7 @@ class BeautyBookingApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        fontFamily: 'Montserrat', // Apply Montserrat globally
+        fontFamily: 'Montserrat',
         scaffoldBackgroundColor: Colors.white,
         appBarTheme: const AppBarTheme(
           backgroundColor: Color.fromARGB(255, 251, 251, 251),
@@ -31,8 +31,8 @@ class BeautyBookingApp extends StatelessWidget {
         ),
         textTheme: const TextTheme(
           bodyMedium: TextStyle(
-            color: Colors.black, // Black text color
-            fontFamily: 'Montserrat', // Use Montserrat font
+            color: Colors.black,
+            fontFamily: 'Montserrat',
           ),
         ),
       ),
@@ -59,21 +59,20 @@ class _AppointmentListPageState extends State<AppointmentListPage> {
         title: const Text(
           'Bookings ',
           style: TextStyle(
-            color: Colors.black, // Black text color
+            color: Colors.black,
           ),
         ),
         backgroundColor: const Color.fromARGB(255, 251, 251, 251),
         elevation: 0,
         leading: IconButton(
           icon: const Icon(
-            CupertinoIcons.back, // Replaced with Cupertino back icon
+            CupertinoIcons.back,
             color: Colors.black,
           ),
           onPressed: () {
             if (Navigator.canPop(context)) {
               Navigator.pop(context);
             } else {
-              // Redirect to the HomePage if no route is found
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => HomePage()),
@@ -84,10 +83,7 @@ class _AppointmentListPageState extends State<AppointmentListPage> {
       ),
       body: Column(
         children: [
-          // Tab Selector
           _buildTabSelector(),
-
-          // Fetch and Display Appointments
           Expanded(
             child: StreamBuilder<QuerySnapshot>(
               stream: FirebaseFirestore.instance
@@ -137,8 +133,7 @@ class _AppointmentListPageState extends State<AppointmentListPage> {
           borderRadius: BorderRadius.circular(16),
         ),
         child: Row(
-          crossAxisAlignment:
-              CrossAxisAlignment.start, // Align children vertically
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
               child: _tabButton("Upcoming", isUpcomingSelected),
@@ -161,15 +156,11 @@ class _AppointmentListPageState extends State<AppointmentListPage> {
         });
       },
       child: Container(
-        padding: const EdgeInsets.symmetric(
-            vertical: 16,
-            horizontal: 16), // Increased vertical padding for height
-        margin:
-            const EdgeInsets.only(left: 8), // Start button from leftmost edge
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+        margin: const EdgeInsets.only(left: 8),
         decoration: BoxDecoration(
           color: isSelected
-              ? const Color.fromARGB(
-                  255, 237, 122, 160) // Selected tab background color
+              ? const Color.fromARGB(255, 237, 122, 160)
               : Colors.transparent,
           borderRadius: BorderRadius.circular(12),
         ),
@@ -192,12 +183,11 @@ class _AppointmentListPageState extends State<AppointmentListPage> {
       padding: const EdgeInsets.all(16),
       margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
-        color: Colors.white, // White background for a clean, fresh look
-        borderRadius: BorderRadius.circular(16), // Rounded corners
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: const Color.fromARGB(255, 209, 207, 207)
-              .withOpacity(0.3), // Light gray border
-          width: 1, // Border thickness
+          color: const Color.fromARGB(255, 209, 207, 207).withOpacity(0.3),
+          width: 1,
         ),
       ),
       child: Column(

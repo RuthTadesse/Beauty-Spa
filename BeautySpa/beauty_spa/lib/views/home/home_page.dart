@@ -1,6 +1,6 @@
 import 'package:beauty_spa/views/beauty_booking.dart';
-import 'package:beauty_spa/views/home/AdvertisementCard.dart';
-import 'package:beauty_spa/views/home/appointment.dart';
+import 'package:beauty_spa/views/AdvertisementCard.dart';
+import 'package:beauty_spa/views/appointment.dart';
 import 'package:beauty_spa/views/profile_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,9 +17,9 @@ class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
 
   final List<Widget> _pages = [
-    const HomePage(), // Replace with your actual HomePage content
-    const BeautyBookingApp(), // Appointments Page
-    ProfileApp(), // Profile Page
+    const HomePage(),
+    const BeautyBookingApp(),
+    ProfileApp(),
   ];
 
   @override
@@ -28,7 +28,12 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 1,
-        leading: const Icon(Icons.menu, color: Colors.black),
+        leading: SizedBox(
+          height: 32, 
+          width: 32, 
+          child: Image.asset(
+              'assets/images/HomeLogo.png'), 
+        ),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 15.0),
@@ -75,7 +80,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               offset: const Offset(
-                  0, 50), // Makes dropdown open below the profile image.
+                  0, 50), 
             ),
           ),
         ],
@@ -255,7 +260,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // Hair Specialists Section (Row 2)
   // Hair Specialists Section
   Widget _buildHairSpecialists() {
     final List<Map<String, String>> specialists = [
@@ -297,7 +301,6 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header Row with Toggle Text
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -324,12 +327,12 @@ class _HomePageState extends State<HomePage> {
           ),
           const SizedBox(height: 10),
 
-          // First Row of Specialists (Always Visible)
+          // First Row of Specialists
           SizedBox(
             height: 180,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: 3, // Always show 3 in the first row
+              itemCount: 3, 
               itemBuilder: (context, index) {
                 return Container(
                   width: 150,
@@ -361,14 +364,14 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
 
-          // Second Row of Specialists (Visible when 'View All' is toggled)
+
           if (_showAllSpecialists)
             SizedBox(
               height: 180,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount:
-                    secondRowSpecialists.length, // Show remaining specialists
+                    secondRowSpecialists.length, 
                 itemBuilder: (context, index) {
                   return Container(
                     width: 150,
@@ -404,18 +407,16 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // Bottom Navigation Bar
+
 // Bottom Navigation Bar
   Widget _buildBottomNavBar() {
     return BottomNavigationBar(
       selectedItemColor: Colors.pinkAccent,
       unselectedItemColor: Colors.grey,
-      currentIndex: 0, // Set the default selected tab index
+      currentIndex: 0,
       onTap: (index) {
-        // Handle navigation to different pages
         switch (index) {
           case 0:
-            // Stay on the HomePage
             break;
           case 1:
             Navigator.push(

@@ -51,8 +51,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
           children: [
-            const SizedBox(height: 40), // Adjusted for spacing
-            // Top Navigation
+            const SizedBox(height: 40), 
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -63,7 +62,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 ),
                 TextButton(
                   onPressed: () {
-                    // Skip to the last slide
+
                     _pageController.animateToPage(
                       _slides.length - 1,
                       duration: const Duration(milliseconds: 300),
@@ -124,11 +123,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // "Prev" Button
                 if (_currentPage > 0)
                   TextButton(
                     onPressed: () {
-                      // Go to the previous page
                       _pageController.previousPage(
                         duration: const Duration(milliseconds: 300),
                         curve: Curves.easeInOut,
@@ -139,14 +136,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       style: TextStyle(
                         fontSize: 16,
                         color: Colors
-                            .grey, // Use a lighter color for inactive state
+                            .grey, 
                       ),
                     ),
                   )
                 else
                   const SizedBox(
                       width:
-                          48), // Placeholder for alignment when "Prev" is hidden
+                          48),
 
                 // Page Indicator
                 Row(
@@ -180,7 +177,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     _currentPage == _slides.length - 1 ? 'Get Started' : 'Next',
                     style: const TextStyle(
                       fontSize: 16,
-                      color: Color.fromARGB(255, 244, 83, 228), // Highlight the "Next" button in red
+                      color: Color.fromARGB(255, 240, 68, 122) 
                     ),
                   ),
                 ),

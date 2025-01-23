@@ -1,4 +1,4 @@
-import 'package:beauty_spa/views/home/paymentPage.dart';
+import 'package:beauty_spa/views/paymentPage/paymentPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -181,18 +181,17 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
         title: const Text(
           'Book Appointment',
           style: TextStyle(
-            color: Colors.black, // Black text color
-            fontFamily: 'Montserrat', // Custom Montserrat font
-            fontWeight: FontWeight.w500, // Optional: Use bold weight
+            color: Colors.black,
+            fontFamily: 'Montserrat',
+            fontWeight: FontWeight.w500,
           ),
         ),
-        backgroundColor:
-            const Color.fromARGB(255, 251, 251, 251), 
-        elevation: 0, 
+        backgroundColor: const Color.fromARGB(255, 251, 251, 251),
+        elevation: 0,
         leading: IconButton(
           icon: const Icon(
-            CupertinoIcons.back, 
-            color: Colors.black, 
+            CupertinoIcons.back,
+            color: Colors.black,
           ),
           onPressed: () {
             Navigator.pop(context);
@@ -226,6 +225,7 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
                 ],
               ),
               const SizedBox(height: 10),
+ 
               Wrap(
                 spacing: 8.0,
                 children: List.generate(daysInMonth, (index) {
@@ -236,9 +236,25 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
 
                   return GestureDetector(
                     onTap: () {
-                      setState(() {
-                        selectedDay = day;
-                      });
+                      DateTime selectedDate =
+                          DateTime(currentDate.year, currentDate.month, day);
+                      if (selectedDate.isBefore(DateTime.now())) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: const Text(
+                              "Selected date cannot be before today!",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            backgroundColor: Colors.red,
+                            behavior: SnackBarBehavior.floating,
+                            duration: const Duration(seconds: 2),
+                          ),
+                        );
+                      } else {
+                        setState(() {
+                          selectedDay = day;
+                        });
+                      }
                     },
                     child: Container(
                       width: 32,
@@ -265,6 +281,7 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
                   );
                 }),
               ),
+
               const SizedBox(height: 20),
               Wrap(
                 spacing: 12.0,
@@ -451,14 +468,14 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
                       const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.white, // White background
-                      borderRadius: BorderRadius.circular(8), // Rounded corners
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.grey.withOpacity(0.1), // Light shadow
+                          color: Colors.grey.withOpacity(0.1),
                           spreadRadius: 2,
                           blurRadius: 6,
-                          offset: const Offset(0, 3), // Slight downward offset
+                          offset: const Offset(0, 3),
                         ),
                       ],
                     ),
@@ -490,7 +507,7 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
                         const Divider(
                           color: Color.fromARGB(255, 205, 163, 177),
                           height: 16,
-                          thickness: 0.5, // Very thin line for subtlety
+                          thickness: 0.5, 
                           indent: 4,
                           endIndent: 4,
                         ),
@@ -540,11 +557,9 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
                   ),
                 ),
 
-              // Proceed to Payment Button
               Center(
                 child: GestureDetector(
                   onTap: () {
-                    // Navigate to the PaymentPage and pass the required data
                     if (selectedSpecialist != null &&
                         selectedSlot != null &&
                         selectedCategory.isNotEmpty &&
@@ -570,9 +585,9 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
                         SnackBar(
                           content: Text(
                             "Please provide all details before proceeding.",
-                            style: TextStyle(color: Colors.white), // Text color
+                            style: TextStyle(color: Colors.white),
                           ),
-                          backgroundColor: Colors.red, // Background color
+                          backgroundColor: Colors.red,
                           duration: Duration(seconds: 2),
                         ),
                       );
@@ -587,13 +602,13 @@ class _BookAppointmentPageState extends State<BookAppointmentPage> {
                         colors: [
                           Color(0xFFD66986),
                           Color(0xFFED9598),
-                        ], // Gradient from #d66986 to #ed9598
+                        ],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       ),
                     ),
                     child: Text(
-                      "Proceed To Payment", // Replace with your button text
+                      "Proceed To Payment",
                       style: TextStyle(
                         fontSize: 16,
                         color: Colors.white,

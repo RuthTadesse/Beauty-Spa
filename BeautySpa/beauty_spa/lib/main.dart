@@ -1,14 +1,14 @@
 import 'package:beauty_spa/views/beauty_booking.dart';
-import 'package:beauty_spa/views/home/SignUp.dart';
-import 'package:beauty_spa/views/home/login_page.dart';
-import 'package:beauty_spa/views/home/successPage.dart';
+import 'package:beauty_spa/views/authPages/SignUp.dart';
+import 'package:beauty_spa/views/authPages/login_page.dart';
+import 'package:beauty_spa/views/successPage.dart';
 import 'package:beauty_spa/views/onboarding/onboarding_page.dart';
 import 'package:beauty_spa/views/profile_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../views/home/home_page.dart';
-import '../views/home/appointment.dart';
+import 'views/appointment.dart';
 import './views/splash/splash_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -56,20 +56,20 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Stylist Booking App',
       theme: ThemeData(
-        primarySwatch: Colors.grey, // Base theme color
-        scaffoldBackgroundColor: Colors.white, // White background
-        primaryColor: Colors.grey[800], // Define primary color explicitly
+        primarySwatch: Colors.grey, 
+        scaffoldBackgroundColor: Colors.white, 
+        primaryColor: Colors.grey[800],
         colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.grey)
-            .copyWith(secondary: Colors.grey), // Override secondary color
+            .copyWith(secondary: Colors.grey),
         appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.white, // White app bar
-          elevation: 0, // Optional: Remove shadow from app bar
-          iconTheme: IconThemeData(color: Colors.black), // Black icons
+          backgroundColor: Colors.white, 
+          elevation: 0, 
+          iconTheme: IconThemeData(color: Colors.black), 
         ),
         textTheme: const TextTheme(
             bodyMedium: TextStyle(
-        color: Colors.black, // Black text color
-        fontFamily: 'Montserrat', // Use Montserrat font
+        color: Colors.black, 
+        fontFamily: 'Montserrat', 
       ),
         ),
       ),

@@ -1,9 +1,9 @@
-import 'package:beauty_spa/views/home/login_page.dart';
+import 'package:beauty_spa/views/authPages/login_page.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart'; // For Firebase Authentication
-import 'package:cloud_firestore/cloud_firestore.dart'; // For Firestore
-import 'dart:convert'; // For utf8 encoding
-import 'package:crypto/crypto.dart'; // For password hashing
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:convert';
+import 'package:crypto/crypto.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -28,18 +28,14 @@ class _SignUpPageState extends State<SignUpPage> {
       });
 
       try {
-        // Create user with email and password
         final UserCredential userCredential =
             await _auth.createUserWithEmailAndPassword(
           email: _emailController.text.trim(),
           password: _passwordController.text,
         );
-
-        // Hash the password for storing in Firestore
         final hashedPassword =
             sha256.convert(utf8.encode(_passwordController.text)).toString();
 
-        // Save user data in Firestore
         await _firestore.collection('users').doc(userCredential.user!.uid).set({
           'email': _emailController.text.trim(),
           'username': _usernameController.text.trim(),
@@ -47,7 +43,6 @@ class _SignUpPageState extends State<SignUpPage> {
           'createdAt': FieldValue.serverTimestamp(),
         });
 
-        // Show a success message
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Signup Successful! Redirecting to login...'),
@@ -55,7 +50,6 @@ class _SignUpPageState extends State<SignUpPage> {
           ),
         );
 
-        // Navigate to the Login Page
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => const LoginPage()),
@@ -84,7 +78,6 @@ class _SignUpPageState extends State<SignUpPage> {
           ),
         );
       } catch (e) {
-        // Handle unexpected errors
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
@@ -151,7 +144,8 @@ class _SignUpPageState extends State<SignUpPage> {
                           filled: true,
                           fillColor: Colors.white,
                           hintText: "Enter your email",
-                          hintStyle: const TextStyle(color: Color.fromARGB(255, 200, 199, 199)),
+                          hintStyle: const TextStyle(
+                              color: Color.fromARGB(255, 200, 199, 199)),
                           prefixIcon:
                               const Icon(Icons.email, color: Color(0xFFDE778C)),
                           enabledBorder: OutlineInputBorder(
@@ -196,7 +190,8 @@ class _SignUpPageState extends State<SignUpPage> {
                           filled: true,
                           fillColor: Colors.white,
                           hintText: "Enter your username",
-                          hintStyle: const TextStyle(color: Color.fromARGB(255, 200, 199, 199)),
+                          hintStyle: const TextStyle(
+                              color: Color.fromARGB(255, 200, 199, 199)),
                           prefixIcon: const Icon(Icons.person,
                               color: Color(0xFFDE778C)),
                           enabledBorder: OutlineInputBorder(
@@ -241,7 +236,8 @@ class _SignUpPageState extends State<SignUpPage> {
                           filled: true,
                           fillColor: Colors.white,
                           hintText: "Enter your password",
-                          hintStyle: const TextStyle(color: Color.fromARGB(255, 200, 199, 199)),
+                          hintStyle: const TextStyle(
+                              color: Color.fromARGB(255, 200, 199, 199)),
                           prefixIcon:
                               const Icon(Icons.lock, color: Color(0xFFDE778C)),
                           enabledBorder: OutlineInputBorder(
@@ -276,8 +272,6 @@ class _SignUpPageState extends State<SignUpPage> {
                         },
                       ),
                       const SizedBox(height: 24),
-
-                      // Sign-Up Button with Gradient
                       SizedBox(
                         width: double.infinity,
                         child: GestureDetector(
@@ -308,14 +302,13 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                       const SizedBox(height: 16),
 
-                      // Go Back to Login
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const Text("Already have an account? "),
                           GestureDetector(
                             onTap: () {
-                              Navigator.pop(context); // Return to Login Page
+                              Navigator.pop(context);
                             },
                             child: const Text(
                               "Log In",

@@ -1,4 +1,4 @@
-import 'package:beauty_spa/views/home/appointment.dart';
+import 'package:beauty_spa/views/appointment.dart';
 import 'package:flutter/material.dart';
 
 class BookingCard extends StatelessWidget {
@@ -8,9 +8,9 @@ class BookingCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFFFDECEF), // Light Pink Background
+        color: const Color(0xFFFDECEF), 
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFFFFC0CB)), // Subtle Border
+        border: Border.all(color: const Color(0xFFFFC0CB)), 
       ),
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -21,7 +21,7 @@ class BookingCard extends StatelessWidget {
             'Book Your Appointment',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: const Color(0xFFE91E63), // Deep Pink Text
+                  color: const Color(0xFFE91E63), 
                 ),
           ),
           const SizedBox(height: 8),
@@ -38,7 +38,6 @@ class BookingCard extends StatelessWidget {
             alignment: Alignment.centerRight,
             child: GestureDetector(
               onTap: () {
-                // Navigate to the BookingPage when clicked
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => BookAppointmentPage()),
@@ -47,7 +46,7 @@ class BookingCard extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFE91E63), // Deep Pink Button
+                  color: const Color(0xFFE91E63), 
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Text(

@@ -27,8 +27,8 @@ class ProfileApp extends StatelessWidget {
         ),
         textTheme: const TextTheme(
           bodyMedium: TextStyle(
-            color: Colors.black, // Black text color
-            fontFamily: 'Montserrat', // Use Montserrat font
+            color: Colors.black, 
+            fontFamily: 'Montserrat', 
           ),
         ),
       ),
@@ -48,14 +48,13 @@ class ProfilePage extends StatelessWidget {
         leading: IconButton(
 
           icon: const Icon(
-            CupertinoIcons.back, // Replaced with Cupertino back icon
+            CupertinoIcons.back, 
             color: Colors.white,
           ),
           onPressed: () {
             if (Navigator.canPop(context)) {
               Navigator.pop(context);
             } else {
-              // Redirect to the HomePage if no route is found
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => HomePage()),
@@ -69,7 +68,6 @@ class ProfilePage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // Header Section
             Stack(
               alignment: Alignment.bottomCenter,
               children: [
@@ -163,7 +161,6 @@ class ProfilePage extends StatelessWidget {
 
             const SizedBox(height: 20),
 
-            // Footer
             const Padding(
               padding: EdgeInsets.all(12),
               child: Text(
@@ -177,7 +174,6 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  // Function to Build Option Rows
   Widget buildOption({
     required IconData icon,
     required String title,
@@ -200,9 +196,8 @@ class ProfilePage extends StatelessWidget {
           tileColor: Colors.white,
           contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           horizontalTitleGap: 8,
-          hoverColor: Colors.pink.shade50, // Highlight on hover
+          hoverColor: Colors.pink.shade50,
           onTap: () {
-            // Do nothing when tapped unless functionality is added
           },
         ),
       ),

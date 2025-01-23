@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'successPage.dart';
+import '../successPage.dart';
+import 'package:intl/intl.dart';
 
 class PaymentPage extends StatefulWidget {
   final double price;
@@ -63,6 +64,22 @@ class _PaymentPageState extends State<PaymentPage> {
     }
   }
 
+  bool _isFutureDate(String expiryDate) {
+    try {
+      final parts = expiryDate.split('/');
+      if (parts.length != 2) return false;
+      final month = int.parse(parts[0]);
+      final year = int.parse('20${parts[1]}');
+
+      if (month < 1 || month > 12) return false;
+      final now = DateTime.now();
+      final expiry = DateTime(year, month);
+      return expiry.isAfter(now);
+    } catch (e) {
+      return false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     double total = widget.price + widget.tax;
@@ -71,18 +88,17 @@ class _PaymentPageState extends State<PaymentPage> {
       appBar: AppBar(
         title: const Text(
           'Payment',
-            style: TextStyle(
-      color: Colors.black, // Black text color
-      fontFamily: 'Montserrat', // Custom Montserrat font
-      fontWeight: FontWeight.w500, // Optional: Use bold weight
-    ),
+          style: TextStyle(
+            color: Colors.black,
+            fontFamily: 'Montserrat',
+            fontWeight: FontWeight.w500,
+          ),
         ),
-        backgroundColor:
-            const Color.fromARGB(255, 251, 251, 251), // Pink background
+        backgroundColor: const Color.fromARGB(255, 251, 251, 251),
         elevation: 0,
         leading: IconButton(
           icon: const Icon(
-            CupertinoIcons.back, // Replaced with Cupertino back icon
+            CupertinoIcons.back,
             color: Colors.black,
           ),
           onPressed: () {
@@ -149,12 +165,30 @@ class _PaymentPageState extends State<PaymentPage> {
                             label: 'First Name',
                             controller: _firstNameController,
                             placeholder: 'Enter your first name',
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'First Name is required';
+                              }
+                              if (value.length <= 4) {
+                                return 'First Name must be more than 4 characters';
+                              }
+                              return null;
+                            },
                           ),
                           const SizedBox(height: 10),
                           _buildLabelAndInput(
                             label: 'Last Name',
                             controller: _lastNameController,
                             placeholder: 'Enter your last name',
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Last Name is required';
+                              }
+                              if (value.length <= 4) {
+                                return 'Last Name must be more than 4 characters';
+                              }
+                              return null;
+                            },
                           ),
                           const SizedBox(height: 10),
                           _buildLabelAndInput(
@@ -168,6 +202,15 @@ class _PaymentPageState extends State<PaymentPage> {
                             label: 'Expiry Date',
                             controller: _expiryDateController,
                             placeholder: 'MM/YY',
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Expiry Date is required';
+                              }
+                              if (!_isFutureDate(value)) {
+                                return 'Expiry Date must be in the future';
+                              }
+                              return null;
+                            },
                           ),
                           const SizedBox(height: 10),
                           _buildLabelAndInput(
@@ -249,6 +292,7 @@ class _PaymentPageState extends State<PaymentPage> {
     required String label,
     required TextEditingController controller,
     required String placeholder,
+    String? Function(String?)? validator,
     bool isCardNumber = false,
     bool isCVV = false,
   }) {
@@ -266,8 +310,8 @@ class _PaymentPageState extends State<PaymentPage> {
           decoration: InputDecoration(
             hintText: placeholder,
             hintStyle: const TextStyle(
-              fontSize: 14, // Smaller placeholder font
-              color: Colors.grey, // Lighter placeholder
+              fontSize: 14,
+              color: Colors.grey,
               fontWeight: FontWeight.w400,
             ),
             enabledBorder: OutlineInputBorder(
@@ -285,18 +329,19 @@ class _PaymentPageState extends State<PaymentPage> {
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
           ),
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return '$label is required';
-            }
-            if (isCardNumber && (!RegExp(r'^\d{16}$').hasMatch(value))) {
-              return 'Enter a valid 16-digit card number';
-            }
-            if (isCVV && (!RegExp(r'^\d{3}$').hasMatch(value))) {
-              return 'Enter a valid 3-digit CVV';
-            }
-            return null;
-          },
+          validator: validator ??
+              (value) {
+                if (value == null || value.isEmpty) {
+                  return '$label is required';
+                }
+                if (isCardNumber && (!RegExp(r'^\d{16}$').hasMatch(value))) {
+                  return 'Enter a valid 16-digit card number';
+                }
+                if (isCVV && (!RegExp(r'^\d{3}$').hasMatch(value))) {
+                  return 'Enter a valid 3-digit CVV';
+                }
+                return null;
+              },
         ),
       ],
     );
