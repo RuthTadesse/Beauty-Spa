@@ -16,7 +16,8 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   bool _showError = false;
   String _errorMessage = '';
-  bool _isLoading = false;  // Added to manage loading state
+  bool _isLoading = false; 
+  bool _isPasswordVisible = false; 
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -26,7 +27,7 @@ class _LoginPageState extends State<LoginPage> {
       String password = _passwordController.text.trim();
 
       setState(() {
-        _isLoading = true;  // Show loading indicator
+        _isLoading = true; // Show loading indicator
       });
 
       try {
@@ -37,7 +38,7 @@ class _LoginPageState extends State<LoginPage> {
         setState(() {
           _showError = false;
           _errorMessage = '';
-          _isLoading = false;  // Hide loading indicator
+          _isLoading = false; // Hide loading indicator
         });
 
         Navigator.pushReplacement(
@@ -46,7 +47,7 @@ class _LoginPageState extends State<LoginPage> {
         );
       } on FirebaseAuthException catch (e) {
         setState(() {
-          _isLoading = false;  // Hide loading indicator
+          _isLoading = false; // Hide loading indicator
           _showError = true;
           if (e.code == 'user-not-found') {
             _errorMessage = 'No user found for that email.';
@@ -145,7 +146,7 @@ class _LoginPageState extends State<LoginPage> {
                       const SizedBox(height: 8),
                       TextFormField(
                         controller: _passwordController,
-                        obscureText: true,
+                        obscureText: !_isPasswordVisible, // Toggle visibility
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Colors.white,
@@ -155,6 +156,19 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           prefixIcon:
                               const Icon(Icons.lock, color: Color(0xFFDE778C)),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _isPasswordVisible
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: Colors.grey,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _isPasswordVisible = !_isPasswordVisible;
+                              });
+                            },
+                          ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide:
