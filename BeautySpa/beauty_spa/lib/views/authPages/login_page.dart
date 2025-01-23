@@ -16,6 +16,7 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   bool _showError = false;
   String _errorMessage = '';
+  bool _isLoading = false;  // Added to manage loading state
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -23,6 +24,10 @@ class _LoginPageState extends State<LoginPage> {
     if (_formKey.currentState!.validate()) {
       String email = _usernameController.text.trim();
       String password = _passwordController.text.trim();
+
+      setState(() {
+        _isLoading = true;  // Show loading indicator
+      });
 
       try {
         UserCredential userCredential = await _auth.signInWithEmailAndPassword(
@@ -32,6 +37,7 @@ class _LoginPageState extends State<LoginPage> {
         setState(() {
           _showError = false;
           _errorMessage = '';
+          _isLoading = false;  // Hide loading indicator
         });
 
         Navigator.pushReplacement(
@@ -40,6 +46,7 @@ class _LoginPageState extends State<LoginPage> {
         );
       } on FirebaseAuthException catch (e) {
         setState(() {
+          _isLoading = false;  // Hide loading indicator
           _showError = true;
           if (e.code == 'user-not-found') {
             _errorMessage = 'No user found for that email.';
@@ -164,7 +171,7 @@ class _LoginPageState extends State<LoginPage> {
                                 BorderSide(color: Colors.grey.withOpacity(0.5)),
                           ),
                         ),
-                           validator: (value) {
+                        validator: (value) {
                           if (value == null || value.isEmpty) {
                             return "Please enter your password";
                           } else if (value.length <= 8) {
@@ -202,10 +209,14 @@ class _LoginPageState extends State<LoginPage> {
                             padding: const EdgeInsets.symmetric(vertical: 16),
                           ),
                           onPressed: _login,
-                          child: const Text(
-                            "Log In",
-                            style: TextStyle(fontSize: 18),
-                          ),
+                          child: _isLoading
+                              ? const CircularProgressIndicator(
+                                  color: Colors.white,
+                                )
+                              : const Text(
+                                  "Log In",
+                                  style: TextStyle(fontSize: 18),
+                                ),
                         ),
                       ),
                       const SizedBox(height: 16),
@@ -241,8 +252,7 @@ class _LoginPageState extends State<LoginPage> {
                               foregroundColor: Colors.black,
                               side: BorderSide(color: Colors.grey.shade300),
                             ),
-                            onPressed: () {
-                            },
+                            onPressed: () {},
                             icon: const Icon(
                               Icons.g_mobiledata,
                               color: Color(0xFFDB4437),

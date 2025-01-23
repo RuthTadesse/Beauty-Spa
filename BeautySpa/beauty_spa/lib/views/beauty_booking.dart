@@ -198,6 +198,8 @@ class _AppointmentListPageState extends State<AppointmentListPage> {
     showDialog(
       context: context,
       builder: (context) {
+        bool isLoading = false; // Variable to track the loading state
+
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
@@ -254,11 +256,8 @@ class _AppointmentListPageState extends State<AppointmentListPage> {
                           label: Text(
                             slot,
                             style: TextStyle(
-                              color: isSelected
-                                  ? Colors.white
-                                  : Colors.black, 
-                              fontWeight: FontWeight
-                                  .normal, 
+                              color: isSelected ? Colors.white : Colors.black,
+                              fontWeight: FontWeight.normal,
                             ),
                           ),
                           selected: isSelected,
@@ -269,13 +268,11 @@ class _AppointmentListPageState extends State<AppointmentListPage> {
                               });
                             }
                           },
-                          selectedColor: Colors
-                              .pinkAccent, 
-                          backgroundColor:
-                              Colors.grey[200], 
+                          selectedColor: Colors.pinkAccent,
+                          backgroundColor: Colors.grey[200],
                         );
                       }).toList(),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -285,31 +282,59 @@ class _AppointmentListPageState extends State<AppointmentListPage> {
                   child: const Text("Cancel"),
                 ),
                 ElevatedButton(
-                  onPressed: () async {
-                    if (selectedSlot == null) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                            content: Text("Please select a time slot.")),
-                      );
-                      return;
-                    }
+                  onPressed: isLoading
+                      ? null
+                      : () async {
+                          if (selectedSlot == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text("Please select a time slot.")),
+                            );
+                            return;
+                          }
 
-                    await FirebaseFirestore.instance
-                        .collection('appointments')
-                        .doc(appointment.id)
-                        .update({
-                      'date': _dateController.text,
-                      'slot': selectedSlot,
-                    });
+                          setState(() {
+                            isLoading = true;
+                          });
 
-                    Navigator.pop(context);
+                          await FirebaseFirestore.instance
+                              .collection('appointments')
+                              .doc(appointment.id)
+                              .update({
+                            'date': _dateController.text,
+                            'slot': selectedSlot,
+                          });
 
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                          content: Text("Appointment updated successfully!")),
-                    );
-                  },
-                  child: const Text("Update"),
+                          setState(() {
+                            isLoading = false;
+                          });
+
+                          Navigator.pop(context);
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content:
+                                    Text("Appointment updated successfully!")),
+                          );
+                        },
+                  child: isLoading
+                      ? Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: const [
+                            Text("Updating"),
+                            SizedBox(width: 8),
+                            SizedBox(
+                              width: 18,
+                              height: 18,
+                              child: CircularProgressIndicator(
+                                valueColor:
+                                    AlwaysStoppedAnimation<Color>(Colors.white),
+                                strokeWidth: 2,
+                              ),
+                            )
+                          ],
+                        )
+                      : const Text("Update"),
                 ),
               ],
             );
