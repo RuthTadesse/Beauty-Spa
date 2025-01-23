@@ -80,7 +80,7 @@ class MyApp extends StatelessWidget {
         '/profile': (context) =>  ProfilePage(),
         '/login': (context) => const LoginPage(),
         '/appointment': (context) => const BookAppointmentPage(),
-        '/booking': (context) => const BeautyBookingApp(),
+        '/booking': (context) => const AppointmentListPage(),
         '/success': (context) =>  SuccessPage(),
          '/signUp': (context) =>  SignUpPage()
       },

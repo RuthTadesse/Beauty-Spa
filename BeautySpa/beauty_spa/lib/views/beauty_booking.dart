@@ -177,6 +177,148 @@ class _AppointmentListPageState extends State<AppointmentListPage> {
     );
   }
 
+  void _showEditDialog(
+      BuildContext context, QueryDocumentSnapshot appointment) {
+    if (!isUpcomingSelected) {
+      return;
+    }
+
+    final _dateController = TextEditingController(text: appointment['date']);
+    String? selectedSlot = appointment['slot'];
+
+    const availableSlots = [
+      '9:30-10:30 AM',
+      '10:30-11:45 AM',
+      '12:00-1:30 PM',
+      '2:00-4:30 PM',
+      '5:30-6:30 PM',
+      '6:30-7:30 PM',
+    ];
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              backgroundColor: Colors.white,
+              title: const Text(
+                "Edit Appointment",
+                style: TextStyle(
+                  color: Color.fromARGB(255, 196, 60, 105),
+                  fontSize: 20,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              content: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TextField(
+                      controller: _dateController,
+                      decoration: const InputDecoration(
+                        labelText: 'Date',
+                        prefixIcon: Icon(Icons.calendar_today),
+                      ),
+                      readOnly: true,
+                      onTap: () async {
+                        final pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: DateFormat('MM/dd/yyyy')
+                              .parse(appointment['date']),
+                          firstDate: DateTime.now(),
+                          lastDate: DateTime(2100),
+                        );
+                        if (pickedDate != null) {
+                          _dateController.text =
+                              DateFormat('MM/dd/yyyy').format(pickedDate);
+                        }
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: const Text(
+                        'Select Time Slot',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: availableSlots.map((slot) {
+                        final isSelected = slot == selectedSlot;
+                        return ChoiceChip(
+                          label: Text(
+                            slot,
+                            style: TextStyle(
+                              color: isSelected
+                                  ? Colors.white
+                                  : Colors.black, 
+                              fontWeight: FontWeight
+                                  .normal, 
+                            ),
+                          ),
+                          selected: isSelected,
+                          onSelected: (selected) {
+                            if (selected) {
+                              setState(() {
+                                selectedSlot = slot;
+                              });
+                            }
+                          },
+                          selectedColor: Colors
+                              .pinkAccent, 
+                          backgroundColor:
+                              Colors.grey[200], 
+                        );
+                      }).toList(),
+                    )
+                  ],
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text("Cancel"),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    if (selectedSlot == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            content: Text("Please select a time slot.")),
+                      );
+                      return;
+                    }
+
+                    await FirebaseFirestore.instance
+                        .collection('appointments')
+                        .doc(appointment.id)
+                        .update({
+                      'date': _dateController.text,
+                      'slot': selectedSlot,
+                    });
+
+                    Navigator.pop(context);
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                          content: Text("Appointment updated successfully!")),
+                    );
+                  },
+                  child: const Text("Update"),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
   // Appointment Card
   Widget _buildAppointmentCard(QueryDocumentSnapshot appointment) {
     return Container(
@@ -193,13 +335,25 @@ class _AppointmentListPageState extends State<AppointmentListPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "Slot: ${appointment['slot']}",
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Colors.black87,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Slot: ${appointment['slot']}",
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                ),
+              ),
+              if (isUpcomingSelected)
+                IconButton(
+                  icon: const Icon(Icons.edit, color: Colors.pinkAccent),
+                  onPressed: () {
+                    _showEditDialog(context, appointment);
+                  },
+                ),
+            ],
           ),
           const SizedBox(height: 8),
           Text(
